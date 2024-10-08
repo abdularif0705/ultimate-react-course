@@ -237,7 +237,7 @@ getTotalReviews(book);
 // Before bulding anything truly meaningful in React you need to be a true master of the 3 functional array methods: map, filter, reduce
 // we call them functional array methods because they don't mutate the original array, they return a new array
 
-function getTotalReviews(book) {
+/* function getTotalReviews(book) {
   const goodreads = book.reviews?.goodreads?.reviewsCount;
   const librarything = book.reviews?.librarything?.reviewsCount ?? 0; // optional chaining operator, if the value for librarything is null or undefined then it will stop there and return undefined, so then we use the nullish coalescing operator to return 0
   return goodreads + librarything;
@@ -273,7 +273,59 @@ const longBooks = books
   .filter((book) => book.hasMovieAdaptation); // doing an && is more efficient than chaining filter methods but this is just for demonstration purposes
 longBooks;
 
-const adventureBooks = books.filter((book) =>
-  book.genres.includes("adventure").map((book) => book.title)
-);
+const adventureBooks = books
+  .filter((book) => book.genres.includes("adventure"))
+  .map((book) => book.title); // we can chain map and filter methods because they both return a new array so on the new array we can call another method
 adventureBooks;
+
+// .reduce method loops over the array and returns a single value. The first argument is a callback function that takes two arguments, the accumulator and the current element of the array. The second argument is the initial value of the accumulator. Usually use it for simple operations like summing up numbers
+const pagesAllBooks = books.reduce((acc, book) => acc + book.pages, 0); // instead of acc we can use total, sum, etc. but acc is the most common
+pagesAllBooks;
+
+// sott
+const nums = [3, 7, 1, 4, 2, 8, 6, 5];
+const sorted = nums.slice().sort((a, b) => a - b); // how to sort numbers in ascending order, do b - a for descending order, not really intuitive but that's how it works
+sorted;
+nums; // sort is not a functional method because it mutates the original array so we use slice to create a copy of the array
+
+const sortedByPages = books.slice().sort((a, b) => b.pages - a.pages);
+sortedByPages;
+
+// Immutable Array Methods
+// 1) Add book object to array
+const newBook = {
+  id: 6,
+  title: "Harry Potter and the Chamber of Secrets",
+  author: "J. K. Rowling",
+};
+
+const booksAfterAdd = [...books, newBook]; // spread operator, adding a new book to the array
+booksAfterAdd;
+
+// 2) Delete book object from array - this will work in the same exact way with objects as they all have ids and we can use the id to delete the object
+const booksAfterDelete = booksAfterAdd.filter((book) => book.id !== 3); // whenever this is false the element is not added to the new array
+booksAfterDelete;
+
+// 3) Update book object in array
+// use map method because we want to return a new array with the updated book, it keeps all the other books the same and only updates the book with the id of 1
+const booksAfterUpdate = booksAfterDelete.map((book) =>
+  book.id === 1 ? { ...book, pages: 1 } : book
+);
+booksAfterUpdate;
+ */
+
+console.log(fetch("https://jsonplaceholder.typicode.com/todos"));
+
+/* fetch("https://jsonplaceholder.typicode.com/todos")
+  .then((res) => res.json())
+  .then((data) => console.log(data)); */ // In React you would typically use this data to update the state, but here we are just logging it to the console
+
+// console.log("abdul"); // this will run first because fetch is asynchronous, it will run in the background and the rest of the code will run
+
+async function fetchTodos() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos"); // JavaScript will wait for this to finish before moving on to the next line
+  const data = await res.json();
+  console.log(data);
+}
+
+fetchTodos;
